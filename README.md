@@ -4,7 +4,7 @@ Solana Dynamic Memory Manager.
 ### Objective: 
 - Create a Solana program that uses a custom heap and cross-program invocations;
 - Cross-Compiling with Rust;
-- Use that program with Cross-Program Invocations as a way to temporarily store data other programs.
+- Use that program with Cross-Program Invocations as a way to temporarily store data from other programs.
 
 
 ### Would It Make Sense? Would It Be Useful?
@@ -12,32 +12,32 @@ tldr; no
 
 #### Pros:
 
-- Custom Memory Management: You can optimize memory allocation to suit specific needs better than the default allocator.
-- Shared Memory: Facilitate shared data storage across programs.
+- Custom Memory Management: It may optimize memory allocation to suit specific needs better than the default allocator.
+- Shared Memory: It will Facilitate shared data storage across programs.
 
-### Cons:
+#### Cons:
 
-- Complexity: Adds complexity to your Solana programs and introduces more points of failure.
+- Complexity: Adds complexity to the Solana programs and introduces more points of failure.
 - Overhead: Cross-program invocations introduce overhead that might negate the benefits of custom allocation.
 
 #### Practical Use Cases
-- Large Temporary Buffers: If your application requires large temporary buffers that exceed the stack size limitations of Solana programs.
-- Custom Allocation Patterns: If your application benefits from specific allocation patterns not supported by the default allocator.
+- Large Temporary Buffers: If an application requires large temporary buffers that exceed the stack size limitations of Solana programs.
+- Custom Allocation Patterns: If an application benefits from specific allocation patterns not supported by the default allocator.
 
 
-eBPF documentation;
-https://www.youtube.com/watch?v=oBW2KJq3FnA
-https://qmonnet.github.io/whirl-offload/2020/04/12/llvm-ebpf-asm/
-https://medium.com/@megawan/writing-compiling-and-loading-ebpf-program-7b0efa014142
+### eBPF documentation;
+- https://www.youtube.com/watch?v=oBW2KJq3FnA
+- https://qmonnet.github.io/whirl-offload/2020/04/12/llvm-ebpf-asm/
+- https://medium.com/@megawan/writing-compiling-and-loading-ebpf-program-7b0efa014142
 
 ### Current problematic 
 
 - Current malloc implementation is using floating point arithmetic as a workarround:
 
-eBPF does not support the division sign and floating point because they are non-deterministic.
+eBPF does not support floating point because they are non-deterministic.
 
 - solution00:
-    > recode the floating-point arithmetic point part.
+    > Recode the floating-point arithmetic point part.
     
     > Allowing arbitrary system calls and operations could introduce security vulnerabilities. eBPF's design restricts what can be done to prevent malicious code from exploiting these capabilities. 
     ```sh
@@ -46,7 +46,7 @@ eBPF does not support the division sign and floating point because they are non-
         |                     ^
     1 error generated.
     ```
-    - fix attempt: making the syscall directly in assembly.
+    - Fix attempt: Making the syscall directly in assembly.
 
     > A call to my_bzero is considered like built-in memset.
     ```sh
@@ -55,7 +55,7 @@ eBPF does not support the division sign and floating point because they are non-
       |                ^
     1 error generated.
     ```
-    - Code was removed.
+    - Fix attempt: Code was removed.
     > Warning about the missing .note.GNU-stack section implies that some of the assembly code might result in an executable stack:
     ```sh
       missing .note.GNU-stack section implies executable stack
@@ -63,7 +63,7 @@ eBPF does not support the division sign and floating point because they are non-
       cp ./build/bpfmalloc.o ./
       root@55a1229bb432:/workspace/ft_malloc# ls -l build/bpfmalloc.o
     ```
-    - To address this, we need to add the .note.GNU-stack section to the assembly files.
+    - To address this, we need to add the .note.GNU-stack section to the assembly files. It compiled, some tests will be perfomed with the LD_PRELOAD trick to insure that this version of my_malloc can run properly before proceeding further.
 
 - solution01:
   > recode a simpler malloc implementation that does not rely on bitmaps and floating point shenanigans;

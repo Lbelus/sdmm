@@ -9,6 +9,7 @@ RUN apt-get update && \
     llvm \
     libssl-dev \
     clang \
+    gcc-multilib \
     cmake \
     curl \
     git \

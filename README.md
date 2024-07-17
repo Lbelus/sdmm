@@ -2,6 +2,12 @@
 Solana Dynamic Memory Manager.
 
 ### Objective: 
+The goal is to push on Solana blockchain an assembly, C, rust cross-compiled  monstrosity that would make David Cronenberg proud.
+
+I want to create a heap smart contract that would handle other programs memory to bypass the 4kb stack limit.  it relies on my_malloc implementation that I made a while ago.
+
+That malloc implementation used float point operation  which is not supported by eBPF VM. The implementation on itself can run linux programs with no issue using the pre_load trick. 
+
 - Create a Solana program that uses a custom heap and cross-program invocations;
 - Cross-Compiling with Rust;
 - Use that program with Cross-Program Invocations as a way to temporarily store data from other programs.

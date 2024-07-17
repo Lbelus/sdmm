@@ -22,7 +22,7 @@
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
 
-char*   itoa(int value, char* result, int base);
+char*   itoa(int value, char* result, unsigned int base);
 int     my_ctoi(char *string, size_t n);
 void    my_revswap(char *ptr, char*ptr1, char tmp_char);
 

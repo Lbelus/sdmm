@@ -36,6 +36,34 @@ https://medium.com/@megawan/writing-compiling-and-loading-ebpf-program-7b0efa014
 
 eBPF does not support the division sign and floating point because they are non-deterministic.
 
-solution:
--> recode the floating-point arithmetic point part;
--> recode a simpler malloc implementation that does not rely on bitmaps and floating point shenanigans;
+- solution00:
+    > recode the floating-point arithmetic point part.
+    
+    > Allowing arbitrary system calls and operations could introduce security vulnerabilities. eBPF's design restricts what can be done to prevent malicious code from exploiting these capabilities. 
+    ```sh
+    src/my_malloc/malloc_misc.c:106:21: error: 0x561a6907bf10: i64 = GlobalAddress<ptr @mmap> 0, src/my_malloc/malloc_misc.c:106:21 too many arguments
+    106 |         void* ptr = mmap(NULL, size_page, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        |                     ^
+    1 error generated.
+    ```
+    - fix attempt: making the syscall directly in assembly.
+
+    > A call to my_bzero is considered like built-in memset.
+    ```sh
+    src/my_string/my_bzero.c:9:16: error: A call to built-in function 'memset' is not supported.
+    9 |         arr[i] = '\0';
+      |                ^
+    1 error generated.
+    ```
+    - Code was removed.
+    > Warning about the missing .note.GNU-stack section implies that some of the assembly code might result in an executable stack:
+    ```sh
+      missing .note.GNU-stack section implies executable stack
+      /usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+      cp ./build/bpfmalloc.o ./
+      root@55a1229bb432:/workspace/ft_malloc# ls -l build/bpfmalloc.o
+    ```
+    - To address this, we need to add the .note.GNU-stack section to the assembly files.
+
+- solution01:
+  > recode a simpler malloc implementation that does not rely on bitmaps and floating point shenanigans;

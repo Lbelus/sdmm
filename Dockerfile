@@ -10,6 +10,7 @@ RUN apt-get update && \
     libssl-dev \
     clang \
     gcc-multilib \
+    nasm \
     cmake \
     curl \
     git \

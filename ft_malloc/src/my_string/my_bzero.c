@@ -1,11 +1,13 @@
-#include <main_header.h>
+// #include <main_header.h>
 
-void my_bzero(void *generic_ptr, size_t n)
-{ // void* p ; generic pointer type. can be converted to any type without "explicit" cast,  // size_t is for array indexing and loop counting
-    char *arr = generic_ptr; // generic pointers cannot be dereferenced, must convert to a pointer before using it. 
-    size_t i;
-    for (i = 0; i < n; ++i)
-    {
-        arr[i] = '\0';
-    }
-}
+// void my_bzero(void *generic_ptr, size_t len)
+// {
+//     char *arr = (char *)generic_ptr;
+//     size_t index = 0;
+    
+//     while (index < len)
+//     {
+//         arr[index] = 0x00;
+//         index++;
+//     }
+// }

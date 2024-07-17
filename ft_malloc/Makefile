@@ -4,8 +4,8 @@ NASM := nasm
 BUILD_DIR := ./build
 SRC_DIRS := ./src
 # CFLAGS = -fsanitize=address -Wall -Wextra -Werror
-CFLAGS = -target bpf -O2 -I/usr/include/x86_64-linux-gnu
-LDFLAGS = $(CFLAGS) -g -shared -nostartfiles
+CFLAGS = -g -fPIC 
+LDFLAGS = $(CFLAGS) -target -bpf -O2 -g -shared -nostartfiles
 
 export C_INCLUDE_PATH=include/
 

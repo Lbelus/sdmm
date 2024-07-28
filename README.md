@@ -35,7 +35,11 @@ tldr; no
 - https://www.youtube.com/watch?v=oBW2KJq3FnA
 - https://qmonnet.github.io/whirl-offload/2020/04/12/llvm-ebpf-asm/
 - https://medium.com/@megawan/writing-compiling-and-loading-ebpf-program-7b0efa014142
+- https://solana.com/docs/programs/faq#berkeley-packet-filter-bpf
 
+
+### Building a solana Program without framework 
+- https://betterprogramming.pub/solana-programming-primer-1c8aae509346
 ### Current problematic 
 
 - Current malloc implementation is using floating point arithmetic as a workarround:

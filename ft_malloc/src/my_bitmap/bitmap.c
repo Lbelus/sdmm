@@ -1,4 +1,4 @@
-#include <main_header.h>
+#include <my_bitmap.h>
 
 /* #################### insert_bmp ###################
     Insert BMP in a linkedlist format;

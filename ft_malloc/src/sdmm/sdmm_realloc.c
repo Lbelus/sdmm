@@ -1,5 +1,4 @@
 #include <sdmm.h>
-#include <my_libasm.h>
 
 void* sdmm_realloc(void* ptr, int size)
 {

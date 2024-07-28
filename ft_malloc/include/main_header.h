@@ -14,9 +14,7 @@
 #include <my_libasm.h>
 #include <my_interval_tree.h>
 #include <my_free_list.h>
-#include <my_string.h>
 #include <my_allocator.h>
-#include <unitests.h>
 // #include <my_error_handler.h>
 
 #define EXIT_SUCCESS 0

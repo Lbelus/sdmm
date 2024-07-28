@@ -1,8 +1,8 @@
-#include <main_header.h>
+#include <sdmm.h>
 
-void* calloc(size_t num, size_t size)
+void* sdmm_calloc(size_t num, size_t size)
 {
-    void* ptr = malloc(num * size);
+    void* ptr = sdmm_malloc(num * size);
     
     if (ptr == NULL)
     {

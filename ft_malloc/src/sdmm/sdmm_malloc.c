@@ -1,7 +1,7 @@
-#include <main_header.h>
+#include <sdmm.h>
 
 // void* my_malloc(size_t size)
-void* malloc(size_t size)
+void* sdmm_malloc(size_t size)
 {
     if (size > PTRDIFF_MAX)
     {
@@ -25,7 +25,7 @@ void* malloc(size_t size)
 }
 
 // void my_free(void* ptr)
-void free(void* ptr)
+void sdmm_free(void* ptr)
 {
     intree_t* node = find_page_start(handler->search_tree, (void*)ptr);
     if (node == NULL)

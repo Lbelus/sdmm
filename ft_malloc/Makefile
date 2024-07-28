@@ -1,4 +1,4 @@
-TARGET_EXEC := bpfmalloc.o
+TARGET_EXEC := sdmm_malloc.o
 CC := clang
 NASM := nasm
 BUILD_DIR := ./build

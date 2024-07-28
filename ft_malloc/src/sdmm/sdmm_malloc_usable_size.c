@@ -1,6 +1,6 @@
-#include <main_header.h>
+#include <sdmm.h>
 
-size_t malloc_usable_size(void* ptr)
+size_t sdmm_malloc_usable_size(void* ptr)
 {
     intree_t* node = find_page_start(handler->search_tree, (void*)ptr);
     if (node == NULL)

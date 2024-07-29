@@ -42,7 +42,7 @@ void set_bit(bmp_t* bmp, int index, int value)
     Check if the bitmap is full;
     @return (bool)
 */
-bool is_bitmap_full(bitlist_t* node)
+bool is_bitmap_full(const bitlist_t* node)
 {
     unsigned int start_offset = calc_nb_slot(sizeof(bitlist_t) + sizeof(bitlist_t) + sizeof(page_t), node->nb_page);
     for (unsigned int index = start_offset; index < BITMAP_SIZE; index++)
@@ -107,7 +107,7 @@ int get_bit(bmp_t bmp, unsigned int index)
     Count the number of free slots from a given position.
     @return (int) Number of available slots
 */
-unsigned int count_free_bits(bmp_t* bmp, unsigned int from, unsigned int len)
+unsigned int count_free_bits(const bmp_t* bmp, unsigned int from, unsigned int len)
 {
     unsigned int byte_index = from / 8;
     unsigned int bit_index = from % 8;
@@ -142,7 +142,7 @@ unsigned int count_free_bits(bmp_t* bmp, unsigned int from, unsigned int len)
     Find number len of available slots inside the given bitmap
     @return (int) position of slot inside bitmap
 */
-int find_free_slot(bmp_t* bmp, unsigned int len)
+int find_free_slot(const bmp_t* bmp, unsigned int len)
 {
     for (unsigned int byte_index = 0; byte_index < BITMAP_SIZE; byte_index++)
     {

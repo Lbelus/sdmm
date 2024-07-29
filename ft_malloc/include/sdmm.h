@@ -1,5 +1,5 @@
-#ifndef __STRING_HEADER_
-#define __STRING_HEADER_
+#ifndef __SDMM_HEADER_
+#define __SDMM_HEADER_
 
 #include <common_header.h>
 #include <sdmm_types.h>

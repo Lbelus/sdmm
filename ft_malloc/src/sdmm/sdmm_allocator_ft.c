@@ -157,6 +157,6 @@ void release_mem(bitlist_t* node)
     {
         node->next = node->next->next;
         size_t size_dealloc = node->nb_page * handler->size_page;
-        munmap(ptr, size_dealloc);
+        my_munmap(ptr, size_dealloc);
     }
 }

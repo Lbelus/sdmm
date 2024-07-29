@@ -7,6 +7,8 @@
 #include <my_bitmap.h>
 #include <my_interval_tree.h>
 
+#define MAP_FAILED ((void *) -1)
+
 void    	sdmm_free(void* ptr);
 void*   	sdmm_malloc(size_t size);
 void* 		sdmm_realloc(void* ptr, int size);

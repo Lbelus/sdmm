@@ -36,7 +36,7 @@ tldr; no
 - https://qmonnet.github.io/whirl-offload/2020/04/12/llvm-ebpf-asm/
 - https://medium.com/@megawan/writing-compiling-and-loading-ebpf-program-7b0efa014142
 - https://solana.com/docs/programs/faq#berkeley-packet-filter-bpf
-
+- https://ebpf.io/what-is-ebpf/
 
 ### Building a solana Program without framework 
 - https://betterprogramming.pub/solana-programming-primer-1c8aae509346
@@ -77,3 +77,12 @@ eBPF does not support floating point because they are non-deterministic.
 
 - solution01:
   > recode a simpler malloc implementation that does not rely on bitmaps and floating point shenanigans;
+
+
+
+bindgen generated binds for the cp program : 
+
+step to build:
+- to_single header.sh
+- source compile_and_cp.sh
+- go to sddm rust dir and cargo build

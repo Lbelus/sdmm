@@ -4,9 +4,11 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    let bpf_header = "src/bpf/wrapper.h";
+    println!("cargo:rerun-if-changed=src/bpf/sdmm_malloc.o");
+    println!("cargo:rustc-link-arg=src/bpf/sdmm_malloc.o");
+
     let bindings = bindgen::Builder::default()
-        .header(bpf_header)
+        .header("src/bpf/wrapper.h")  
         .generate()
         .expect("Unable to generate bindings");
 

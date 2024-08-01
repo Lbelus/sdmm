@@ -37,9 +37,16 @@ tldr; no
 - https://medium.com/@megawan/writing-compiling-and-loading-ebpf-program-7b0efa014142
 - https://solana.com/docs/programs/faq#berkeley-packet-filter-bpf
 - https://ebpf.io/what-is-ebpf/
+- https://qmonnet.github.io/whirl-offload/2020/04/12/llvm-ebpf-asm/
 
 ### Building a solana Program without framework 
 - https://betterprogramming.pub/solana-programming-primer-1c8aae509346
+
+### binding and unsafe c to rust code arround raw void pointers; 
+
+https://medium.com/dwelo-r-d/wrapping-unsafe-c-libraries-in-rust-d75aeb283c65
+https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
+
 ### Current problematic 
 
 - Current malloc implementation is using floating point arithmetic as a workarround:

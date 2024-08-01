@@ -1,6 +1,6 @@
 #include <sdmm.h>
 
-void* sdmm_realloc(void* ptr, int size)
+void* sdmm_realloc(void* ptr, size_t size)
 {
     if (ptr == NULL)
     {

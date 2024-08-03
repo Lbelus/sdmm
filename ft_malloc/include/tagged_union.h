@@ -44,6 +44,8 @@ struct tagged_value_s
         uint16_t   *uint16;
         uint32_t   *uint32;
         uint64_t   *uint64;
+        intptr_t   *intptr;
+        uintptr_t  *uintptr;        
         float      *float32;
         double     *float64;
         char       *string;

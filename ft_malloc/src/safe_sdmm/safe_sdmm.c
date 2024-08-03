@@ -34,6 +34,12 @@ tagged_value_t safe_sdmm_malloc(size_t size, tag_t tag)
         case TAG_UINT64:
             tagged_value.value.uint64 = (uint64_t*)sdmm_malloc(size);
             break;
+        case TAG_INTPTR:
+            tagged_value.value.intptr = (intptr_t*)sdmm_malloc(size);
+            break;
+        case TAG_UINTPTR:
+            tagged_value.value.uintptr = (uintptr_t*)sdmm_malloc(size);
+            break;
         case TAG_FLOAT32:
             tagged_value.value.float32 = (float*)sdmm_malloc(size);
             break;

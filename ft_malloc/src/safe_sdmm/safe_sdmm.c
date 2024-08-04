@@ -67,13 +67,56 @@ tagged_value_t safe_sdmm_malloc(size_t num_elements, tag_t tag)
 //     return ptr;
 // }
 
-// void safe_sdmm_free(void* ptr)
-// {
-//     if (ptr != NULL)
-//     {
-//         sdmm_free(ptr);
-//     }
-// }
+void safe_sdmm_free(tagged_value_t tagged_value)
+{
+    switch (value.tag)
+    {
+        case TAG_INT:
+            sdmm_free(tagged_value.value._int_);
+            break;
+        case TAG_INT8:
+            sdmm_free(tagged_value.value.int8);
+            break;
+        case TAG_INT16:
+            sdmm_free(tagged_value.value.int16);
+            break;
+        case TAG_INT32:
+            sdmm_free(tagged_value.value.int32);
+            break;
+        case TAG_INT64:
+            sdmm_free(tagged_value.value.int64);
+            break;
+        case TAG_UINT8:
+            sdmm_free(tagged_value.value.uint8);
+            break;
+        case TAG_UINT16:
+            sdmm_free(tagged_value.value.uint16);
+            break;
+        case TAG_UINT32:
+            sdmm_free(tagged_value.value.uint32);
+            break;
+        case TAG_UINT64:
+            sdmm_free(tagged_value.value.uint64);
+            break;
+        case TAG_INTPTR:
+            sdmm_free(tagged_value.value.intptr);
+            break;
+        case TAG_UINTPTR:
+            sdmm_free(tagged_value.value.uintptr);
+            break;
+        case TAG_FLOAT32:
+            sdmm_free(tagged_value.value.float32);
+            break;
+        case TAG_FLOAT64:
+            sdmm_free(tagged_value.value.float64);
+            break;
+        case TAG_STRING:
+            sdmm_free(tagged_value.value.string);
+            break;
+        default:
+            break;
+    }
+}
 
 // size_t safe_sdmm_malloc_usable_size(void* ptr)
 // {

@@ -16,46 +16,82 @@ pub struct TaggedValue {
 }
 
 impl TaggedValue {
-    pub fn new(size: usize, tag: bindings::tag_t) -> Option<Self> {
+    const DEFAULT_ELEM: usize = 1;
+    const DEFAULT_POS: usize = 0;
+    pub fn new(tag: bindings::tag_t, num_elements: Option<usize>) -> Option<Self> {
+        let num_elements = num_elements.unwrap_or(Self::DEFAULT_ELEM);
         unsafe {
-            let tagged_value = bindings::safe_sdmm_malloc(size, tag);
+            let tagged_value = bindings::safe_sdmm_malloc(num_elements, tag);
             if tagged_value.value._int_.is_null() {
                 return None;
             }
 
             match tag {
                 bindings::tag_enum_TAG_INT => {
-                    *tagged_value.value._int_ = 0; 
+                    for index in 0..num_elements {
+                        // .add is supposedly able to find ith element ? 
+                        *tagged_value.value._int_.add(index) = 0;
+                    }
                 }
                 bindings::tag_enum_TAG_INT8 => {
-                    *tagged_value.value.int8 = 0; 
+                    for index in 0..num_elements {
+                        *tagged_value.value.int8.add(index) = 0;
+                    }
                 }
                 bindings::tag_enum_TAG_INT16 => {
-                    *tagged_value.value.int16 = 0; 
+                    for index in 0..num_elements {
+                        *tagged_value.value.int16.add(index) = 0;
+                    }
                 }
                 bindings::tag_enum_TAG_INT32 => {
-                    *tagged_value.value.int32 = 0; 
+                    for index in 0..num_elements {
+                        *tagged_value.value.int32.add(index) = 0;
+                    }
                 }
                 bindings::tag_enum_TAG_INT64 => {
-                    *tagged_value.value.int64 = 0; 
+                    for index in 0..num_elements {
+                        *tagged_value.value.int64.add(index) = 0;
+                    } 
                 }
                 bindings::tag_enum_TAG_UINT8 => {
-                    *tagged_value.value.uint8 = 0; 
+                    for index in 0..num_elements {
+                        *tagged_value.value.uint8.add(index) = 0;
+                    }
                 }
                 bindings::tag_enum_TAG_UINT16 => {
-                    *tagged_value.value.uint16 = 0; 
+                    for index in 0..num_elements {
+                        *tagged_value.value.uint16.add(index) = 0;
+                    }
                 }
                 bindings::tag_enum_TAG_UINT32 => {
-                    *tagged_value.value.uint32 = 0; 
+                    for index in 0..num_elements {
+                        *tagged_value.value.uint32.add(index) = 0;
+                    }
                 }
                 bindings::tag_enum_TAG_UINT64 => {
-                    *tagged_value.value.uint64 = 0; 
+                    for index in 0..num_elements {
+                        *tagged_value.value.uint64.add(index) = 0;
+                    }
+                }
+                bindings::tag_enum_TAG_INTPTR => {
+                    for index in 0..num_elements {
+                        *tagged_value.value.intptr.add(index) = 0;
+                    }
+                }
+                bindings::tag_enum_TAG_UINTPTR => {
+                    for index in 0..num_elements {
+                        *tagged_value.value.uintptr.add(index) = 0;
+                    }
                 }
                 bindings::tag_enum_TAG_FLOAT32 => {
-                    *tagged_value.value.float32 = 0.0;
+                    for index in 0..num_elements {
+                        *tagged_value.value.float32.add(index) = 0.0;
+                    }
                 }
                 bindings::tag_enum_TAG_FLOAT64 => {
-                    *tagged_value.value.float64 = 0.0;
+                    for index in 0..num_elements {
+                        *tagged_value.value.float64.add(index) = 0.0;
+                    }
                 }
                 bindings::tag_enum_TAG_STRING => {
                     *tagged_value.value.string = 0;
@@ -70,219 +106,241 @@ impl TaggedValue {
         }
     }
 
-    pub fn set_int(&mut self, value: i32) -> Result<(), &'static str> {
+    pub fn set_int(&mut self, value: i32, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_INT {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value._int_ = value;
+            *self.value._int_.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_int(&self) -> Option<i32> {
+    pub fn get_int(&self, index: Option<usize>) -> Option<i32> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_INT {
-                Some(*self.value._int_)
+                Some(*self.value._int_.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_int8(&mut self, value: i8) -> Result<(), &'static str> {
+    pub fn set_int8(&mut self, value: i8, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_INT8 {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.int8 = value;
+            *self.value.int8.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_int8(&self) -> Option<i8> {
+    pub fn get_int8(&self, index: Option<usize>) -> Option<i8> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_INT8 {
-                Some(*self.value.int8)
+                Some(*self.value.int8.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_int16(&mut self, value: i16) -> Result<(), &'static str> {
+    pub fn set_int16(&mut self, value: i16, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_INT16 {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.int16 = value;
+            *self.value.int16.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_int16(&self) -> Option<i16> {
+    pub fn get_int16(&self, index: Option<usize>) -> Option<i16> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_INT16 {
-                Some(*self.value.int16)
+                Some(*self.value.int16.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_int32(&mut self, value: i32) -> Result<(), &'static str> {
+    pub fn set_int32(&mut self, value: i32, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_INT32 {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.int32 = value;
+            *self.value.int32.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_int32(&self) -> Option<i32> {
+    pub fn get_int32(&self, index: Option<usize>) -> Option<i32> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_INT32 {
-                Some(*self.value.int32)
+                Some(*self.value.int32.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_int64(&mut self, value: i64) -> Result<(), &'static str> {
+    pub fn set_int64(&mut self, value: i64, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_INT64 {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.int64 = value;
+            *self.value.int64.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_int64(&self) -> Option<i64> {
+    pub fn get_int64(&self, index: Option<usize>) -> Option<i64> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_INT64 {
-                Some(*self.value.int64)
+                Some(*self.value.int64.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_intptr(&mut self, value: isize) -> Result<(), &'static str> {
+    pub fn set_intptr(&mut self, value: isize, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_INTPTR {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.intptr = value;
+            *self.value.intptr.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_intptr(&self) -> Option<isize> {
+    pub fn get_intptr(&self, index: Option<usize>) -> Option<isize> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_INTPTR {
-                Some(*self.value.intptr)
+                Some(*self.value.intptr.add(index))
             } else {
                 None
             }
         }
     }
-    pub fn set_uintptr(&mut self, value: usize) -> Result<(), &'static str> {
+    pub fn set_uintptr(&mut self, value: usize, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_UINTPTR {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.uintptr = value;
+            *self.value.uintptr.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_uintptr(&self) -> Option<usize> {
+    pub fn get_uintptr(&self, index: Option<usize>) -> Option<usize> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_UINTPTR {
-                Some(*self.value.uintptr)
+                Some(*self.value.uintptr.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_uint8(&mut self, value: u8) -> Result<(), &'static str> {
+    pub fn set_uint8(&mut self, value: u8, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_UINT8 {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.uint8 = value;
+            *self.value.uint8.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_uint8(&self) -> Option<u8> {
+    pub fn get_uint8(&self, index: Option<usize>) -> Option<u8> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_UINT8 {
-                Some(*self.value.uint8)
+                Some(*self.value.uint8.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_uint16(&mut self, value: u16) -> Result<(), &'static str> {
+    pub fn set_uint16(&mut self, value: u16, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_UINT16 {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.uint16 = value;
+            *self.value.uint16.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_uint16(&self) -> Option<u16> {
+    pub fn get_uint16(&self, index: Option<usize>) -> Option<u16> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_UINT16 {
-                Some(*self.value.uint16)
+                Some(*self.value.uint16.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_uint32(&mut self, value: u32) -> Result<(), &'static str> {
+    pub fn set_uint32(&mut self, value: u32, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_UINT32 {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.uint32 = value;
+            *self.value.uint32.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_uint32(&self) -> Option<u32> {
+    pub fn get_uint32(&self, index: Option<usize>) -> Option<u32> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_UINT32 {
-                Some(*self.value.uint32)
+                Some(*self.value.uint32.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_uint64(&mut self, value: u64) -> Result<(), &'static str> {
+    pub fn set_uint64(&mut self, value: u64, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_UINT64 {
             return Err("Invalid tag for int value");
         }
         unsafe {
-            *self.value.uint64 = value;
+            *self.value.uint64.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_uint64(&self) -> Option<u64> {
+    pub fn get_uint64(&self, index: Option<usize>) -> Option<u64> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_UINT64 {
-                Some(*self.value.uint64)
+                Some(*self.value.uint64.add(index))
             } else {
                 None
             }
@@ -290,40 +348,44 @@ impl TaggedValue {
     }
 
 
-    pub fn set_float32(&mut self, value: f32) -> Result<(), &'static str> {
+    pub fn set_float32(&mut self, value: f32, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_FLOAT32 {
             return Err("Invalid tag for float value");
         }
         unsafe {
-            *self.value.float32 = value;
+            *self.value.float32.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_float32(&self) -> Option<f32> {
+    pub fn get_float32(&self, index: Option<usize>) -> Option<f32> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_FLOAT32 {
-                Some(*self.value.float32)
+                Some(*self.value.float32.add(index))
             } else {
                 None
             }
         }
     }
 
-    pub fn set_float64(&mut self, value: f64) -> Result<(), &'static str> {
+    pub fn set_float64(&mut self, value: f64, index: Option<usize>) -> Result<(), &'static str> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_FLOAT64 {
             return Err("Invalid tag for float value");
         }
         unsafe {
-            *self.value.float64 = value;
+            *self.value.float64.add(index) = value;
         }
         Ok(())
     }
 
-    pub fn get_float64(&self) -> Option<f64> {
+    pub fn get_float64(&self, index: Option<usize>) -> Option<f64> {
+        let index = index.unwrap_or(Self::DEFAULT_POS);
         unsafe {
             if self.tag == bindings::tag_enum_TAG_FLOAT64 {
-                Some(*self.value.float64)
+                Some(*self.value.float64.add(index))
             } else {
                 None
             }
@@ -419,9 +481,8 @@ fn unsafe_test() {
 
 fn main() {
     unsafe_test();
-    let size: usize = 1048;
     let tag = bindings::tag_enum_TAG_INT;
-    let int_container = TaggedValue::new(size, tag);
+    let int_container = TaggedValue::new(tag, None);
     if int_container.is_none() {
         eprintln!("Failed to allocate memory");
         return;
@@ -430,9 +491,9 @@ fn main() {
 
     println!("Allocated memory with tag {:?} at {:?}", int_container.tag, unsafe { int_container.value._int_ });
 
-    int_container.set_int(42).expect("Failed to set int value");
+    int_container.set_int(42, None).expect("Failed to set int value");
 
-    if let Some(value) = int_container.get_int() {
+    if let Some(value) = int_container.get_int(None) {
         println!("Stored int value: {}", value);
     } else {
         eprintln!("Failed to retrieve int value");

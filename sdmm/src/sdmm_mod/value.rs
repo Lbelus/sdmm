@@ -1,19 +1,19 @@
 use crate::sdmm_mod::bindings::*;
 
 #[repr(C)]
-pub struct TaggedValue {
+pub struct ValueDescriptor {
     pub tag: bindings::tag_t,
     pub value: bindings::tagged_value_s__bindgen_ty_1,
 }
 
-impl TaggedValue {
+impl ValueDescriptor {
     const DEFAULT_ELEM: usize = 1;
     const DEFAULT_POS: usize = 0;
     pub fn new(tag: bindings::tag_t, num_elements: Option<usize>) -> Option<Self> {
         let num_elements = num_elements.unwrap_or(Self::DEFAULT_ELEM);
         unsafe {
-            let tagged_value = bindings::safe_sdmm_malloc(num_elements, tag);
-            if tagged_value.value._int_.is_null() {
+            let vd = bindings::safe_sdmm_malloc(num_elements, tag);
+            if vd.value._int_.is_null() {
                 return None;
             }
 
@@ -21,78 +21,78 @@ impl TaggedValue {
                 bindings::tag_enum_TAG_INT => {
                     for index in 0..num_elements {
                         // .add is supposedly able to find ith element ? 
-                        *tagged_value.value._int_.add(index) = 0;
+                        *vd.value._int_.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_INT8 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.int8.add(index) = 0;
+                        *vd.value.int8.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_INT16 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.int16.add(index) = 0;
+                        *vd.value.int16.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_INT32 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.int32.add(index) = 0;
+                        *vd.value.int32.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_INT64 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.int64.add(index) = 0;
+                        *vd.value.int64.add(index) = 0;
                     } 
                 }
                 bindings::tag_enum_TAG_UINT8 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.uint8.add(index) = 0;
+                        *vd.value.uint8.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_UINT16 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.uint16.add(index) = 0;
+                        *vd.value.uint16.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_UINT32 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.uint32.add(index) = 0;
+                        *vd.value.uint32.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_UINT64 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.uint64.add(index) = 0;
+                        *vd.value.uint64.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_INTPTR => {
                     for index in 0..num_elements {
-                        *tagged_value.value.intptr.add(index) = 0;
+                        *vd.value.intptr.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_UINTPTR => {
                     for index in 0..num_elements {
-                        *tagged_value.value.uintptr.add(index) = 0;
+                        *vd.value.uintptr.add(index) = 0;
                     }
                 }
                 bindings::tag_enum_TAG_FLOAT32 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.float32.add(index) = 0.0;
+                        *vd.value.float32.add(index) = 0.0;
                     }
                 }
                 bindings::tag_enum_TAG_FLOAT64 => {
                     for index in 0..num_elements {
-                        *tagged_value.value.float64.add(index) = 0.0;
+                        *vd.value.float64.add(index) = 0.0;
                     }
                 }
                 bindings::tag_enum_TAG_STRING => {
-                    *tagged_value.value.string = 0;
+                    *vd.value.string = 0;
                 }
                 _ => {}
             }
 
             Some(Self {
-                tag: tagged_value.tag,
-                value: tagged_value.value,
+                tag: vd.tag,
+                value: vd.value,
             })
         }
     }

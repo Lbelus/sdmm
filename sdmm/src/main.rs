@@ -1,5 +1,5 @@
 mod sdmm_mod;
-use crate::sdmm_mod::value::TaggedValue;
+use crate::sdmm_mod::value::ValueDescriptor;
 use crate::sdmm_mod::bindings::*;
 
 
@@ -72,7 +72,7 @@ fn unsafe_test() {
 fn main() {
     unsafe_test();
     let tag = bindings::tag_enum_TAG_INT;
-    let int_container = TaggedValue::new(tag, None);
+    let int_container = ValueDescriptor::new(tag, None);
     if int_container.is_none() {
         eprintln!("Failed to allocate memory");
         return;

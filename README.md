@@ -34,15 +34,15 @@ tldr; no
 
 #### Implementation
 
-An eBPF environment can have strict requirements. one of them being the compilation time in a JIT paragdigm. 
+An eBPF environment can have strict requirements, one of which is the compilation time in a JIT (Just-In-Time) paradigm.
 
-Our implementation relies on a c and asm coded malloc binded to rust. The issue is that sdmm_malloc return, as one would expect, a void pointer.
+The implementation relies on a C and ASM coded malloc function bound to Rust. The issue is that sdmm_malloc returns, as one would expect, a void pointer.
 
-A void pointer is a form of "type agnostic" type, which could lead, in rust, to the aboundant use of unsafe code, create undefined behavior, reading forbidden emplacement in the memory and dramatically increase compilation time. All of which is an absoltue no go in eBPF.
+A void pointer is a type-agnostic pointer, which could lead, in Rust, to the abundant use of unsafe code, creating undefined behavior, reading forbidden locations in memory, and dramatically increasing compilation time. All of these issues are absolute no-gos in an eBPF environment.
 
-The answer to that is to provide a deterministic type to type (c to rust) implementation that relies on a tagged union implemented in c and then ported.
+The solution to this is to provide a deterministic type-to-type (C to Rust) implementation that relies on a tagged union implemented in C and then ported to Rust.
 
-So instead of asking for memory via a raw void pointer, the user ask for a given number of elements of a given type.
+So, instead of asking for memory via a raw void pointer, the user requests a given number of elements of a specific type.
 
 ##### generic vs harcoded type. 
 
@@ -70,31 +70,18 @@ https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-poin
 compile and generate the test: 
 - From the root dir:
 ```bash 
-source compile_and_cp.sh
+source ./compile_and_cp.sh
+or
+source ./re.sh
 ```
 - go to ``sdmm``
 ```bash 
 cargo build
 cargo test
+cargo run
 ```
 
-
-
-
-bindgen generated binds for the cp program : 
-
-step to build:
-- to_single header.sh
-- source compile_and_cp.sh
-- go to sddm rust dir and cargo build
-
-
-
-
-
-
-
-### Current problematic 
+### solved problematic 
 
 - Current malloc implementation is using floating point arithmetic as a workarround:
 

@@ -1,6 +1,6 @@
-mod safe_sdmm;
-use crate::safe_sdmm::value::TaggedValue;
-use crate::safe_sdmm::bindings::*;
+mod sdmm_mod;
+use crate::sdmm_mod::value::TaggedValue;
+use crate::sdmm_mod::bindings::*;
 
 
 fn unsafe_test() {

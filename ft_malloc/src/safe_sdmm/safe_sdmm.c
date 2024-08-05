@@ -69,7 +69,7 @@ tagged_value_t safe_sdmm_malloc(size_t num_elements, tag_t tag)
 
 void safe_sdmm_free(tagged_value_t tagged_value)
 {
-    switch (value.tag)
+    switch (tagged_value.tag)
     {
         case TAG_INT:
             sdmm_free(tagged_value.value._int_);

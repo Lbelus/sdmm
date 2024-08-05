@@ -9,7 +9,7 @@
 #define MAP_FAILED ((void *) -1)
 
 
-void    	        safe_sdmm_free(void* ptr);
+void    	        safe_sdmm_free(tagged_value_t value);
 tagged_value_t    	safe_sdmm_malloc(size_t size, tag_t tag);
 tagged_value_t      safe_sdmm_realloc(void* ptr, size_t size);
 tagged_value_t      safe_sdmm_calloc(size_t num, size_t size);

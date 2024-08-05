@@ -1,13 +1,4 @@
-#[allow(non_upper_case_globals)]
-#[allow(non_camel_case_types)]
-#[allow(non_snake_case)]
-#[allow(unused)]
-
-mod bindings {
-    include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
-}
-
-#[warn(unused)]
+use crate::sdmm_mod::bindings::*;
 
 #[repr(C)]
 pub struct TaggedValue {
@@ -105,7 +96,7 @@ impl TaggedValue {
             })
         }
     }
-
+    
     pub fn set_int(&mut self, value: i32, index: Option<usize>) -> Result<(), &'static str> {
         let index = index.unwrap_or(Self::DEFAULT_POS);
         if self.tag != bindings::tag_enum_TAG_INT {
@@ -411,4 +402,15 @@ impl TaggedValue {
         }
     }
 
+    fn to_c_struct(&self) -> bindings::tagged_value_t {
+        bindings::tagged_value_t {
+            tag: self.tag,
+            value: self.value,
+        }
+    }
+    pub fn free(&mut self) {
+        unsafe {
+            bindings::safe_sdmm_free(self.to_c_struct());
+        }
+    }
 }

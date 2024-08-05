@@ -31,6 +31,25 @@ tldr; no
 - Custom Allocation Patterns: If an application benefits from specific allocation patterns not supported by the default allocator.
 
 
+
+#### Implementation
+
+An eBPF environment can have strict requirements. one of them being the compilation time in a JIT paragdigm. 
+
+Our implementation relies on a c and asm coded malloc binded to rust. The issue is that sdmm_malloc return, as one would expect, a void pointer.
+
+A void pointer is a form of "type agnostic" type, which could lead, in rust, to the aboundant use of unsafe code, create undefined behavior, reading forbidden emplacement in the memory and dramatically increase compilation time. All of which is an absoltue no go in eBPF.
+
+The answer to that is to provide a deterministic type to type (c to rust) implementation that relies on a tagged union implemented in c and then ported.
+
+So instead of asking for memory via a raw void pointer, the user ask for a given number of elements of a given type.
+
+##### generic vs harcoded type. 
+
+While probably more elegant and less tedious, the use of generics could lead to increased compilation time. Solana and eBPF have an hard limit regarding compilation, so, in that regard, a harcoded approach was chosen.
+
+
+
 ### eBPF documentation;
 - https://www.youtube.com/watch?v=oBW2KJq3FnA
 - https://qmonnet.github.io/whirl-offload/2020/04/12/llvm-ebpf-asm/
@@ -46,6 +65,34 @@ tldr; no
 
 https://medium.com/dwelo-r-d/wrapping-unsafe-c-libraries-in-rust-d75aeb283c65
 https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
+
+
+compile and generate the test: 
+- From the root dir:
+```bash 
+source compile_and_cp.sh
+```
+- go to ``sdmm``
+```bash 
+cargo build
+cargo test
+```
+
+
+
+
+bindgen generated binds for the cp program : 
+
+step to build:
+- to_single header.sh
+- source compile_and_cp.sh
+- go to sddm rust dir and cargo build
+
+
+
+
+
+
 
 ### Current problematic 
 
@@ -87,9 +134,3 @@ eBPF does not support floating point because they are non-deterministic.
 
 
 
-bindgen generated binds for the cp program : 
-
-step to build:
-- to_single header.sh
-- source compile_and_cp.sh
-- go to sddm rust dir and cargo build

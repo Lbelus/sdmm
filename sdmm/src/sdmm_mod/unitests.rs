@@ -212,4 +212,51 @@ mod tests {
 
         vd.free();
     }
+
+    #[test]
+    fn test_raw_ptr() {
+        unsafe {
+            // Allocate mem
+            let size: usize = 1048;
+            let ptr = bindings::sdmm_malloc(size);
+            if ptr.is_null() {
+                eprintln!("Failed to allocate memory");
+                return;
+            }
+            let value_to_store: i32 = 42;
+            let ptr_as_int_ptr = ptr as *mut i32;
+            *ptr_as_int_ptr = value_to_store;
+            let retrieved_value = *ptr_as_int_ptr;
+            assert_eq!(retrieved_value, 42, "Value at adresse {:?} does not match expected value", ptr);
+            // let usable_size = bindings::sdmm_malloc_usable_size(ptr);
+            let new_size: usize = 2048;
+            let new_ptr = bindings::sdmm_realloc(ptr, new_size);
+            if new_ptr.is_null() {
+                eprintln!("Failed to reallocate memory");
+                bindings::sdmm_free(ptr);
+                return;
+            }    
+            let new_ptr_as_int_ptr = new_ptr as *mut i32;
+            let preserved_value = *new_ptr_as_int_ptr;
+            assert_eq!(preserved_value, 42, "Value at adresse {:?} does not match expected value", new_ptr);    
+            let num: usize = 10;
+            let element_size: usize = 256;
+            let calloc_ptr = bindings::sdmm_calloc(num, element_size);
+            if calloc_ptr.is_null() {
+                eprintln!("Failed to allocate zero-initialized memory");
+                bindings::sdmm_free(new_ptr);
+                return;
+            }
+            println!("Allocated zero-initialized memory for {} elements of size {} at {:?}", num, element_size, calloc_ptr);    
+            let calloc_ptr_as_int_ptr = calloc_ptr as *mut i32;
+            let zero_value = *calloc_ptr_as_int_ptr;
+
+            assert_eq!(zero_value, 0, "Value at adresse {:?} does not match expected value", calloc_ptr);        
+            bindings::sdmm_free(new_ptr);
+            bindings::sdmm_free(calloc_ptr);
+        }
+    }
+
 }
+
+

@@ -4,7 +4,7 @@ Solana Dynamic Memory Manager.
 ### Objective: 
 The goal is to push on Solana blockchain an assembly, C, rust cross-compiled  monstrosity that would make David Cronenberg proud.
 
-I want to create a heap smart contract that would handle other programs memory to bypass the 4kb stack limit.  it relies on my_malloc implementation that I made a while ago.
+I want to create a heap smart contract that would handle other programs memory. it relies on my_malloc implementation that I made a while ago.
 
 That malloc implementation used float point operation  which is not supported by eBPF VM. The implementation on itself can run linux programs with no issue using the pre_load trick. 
 
@@ -47,7 +47,6 @@ So, instead of asking for memory via a raw void pointer, the user requests a giv
 ##### generic vs harcoded type. 
 
 While probably more elegant and less tedious, the use of generics could lead to increased compilation time. Solana and eBPF have an hard limit regarding compilation, so, in that regard, a harcoded approach was chosen.
-
 
 
 ### eBPF documentation;
@@ -121,3 +120,13 @@ eBPF does not support floating point because they are non-deterministic.
 
 
 
+### developping a Smart contract in rust
+
+relies on ``solana-program`` crate
+
+Solana SBF programs' fixed virtual address memory map:
+
+- Program code starts at 0x100000000
+- Stack data starts at 0x200000000
+- Heap data starts at 0x300000000
+- Program input parameters start at 0x400000000

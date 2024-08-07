@@ -1,10 +1,9 @@
-use crate::sdmm_mod::value::ValueDescriptor;
-use crate::sdmm_mod::bindings::*;
 
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::bindings;
+    use crate::ValueDescriptor;
 
     #[test]
     fn test_int() {

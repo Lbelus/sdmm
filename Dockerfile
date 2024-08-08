@@ -39,7 +39,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 #     avm use latest
 
 # Install Solana CLI tools
-# RUN sh -c "$(curl -sSfL https://release.solana.com/v1.18.15/install)"
+# RUN sh -c "$(curl -sSfL https://release.solana.com/v1.18.21/install)"
 # ENV PATH="/root/.local/share/solana/install/active_release/bin:$PATH"
 
 # Install Yarn

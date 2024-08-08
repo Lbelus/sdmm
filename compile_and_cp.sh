@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# don't forget to souce the file . script.sh or source script.sh
+# don't forget to source the file . script.sh or source script.sh
 
 make -C ft_malloc/
 cp ft_malloc/sdmm_malloc.o sdmm/src/bpf/sdmm_malloc.o

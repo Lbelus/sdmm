@@ -2,6 +2,41 @@
 mod tests {
     use crate::bindings;
     use crate::ValueDescriptor;
+    use crate::basic_test_fn;
+
+    #[test]
+    fn test_global_alloc() {
+        let skip: bool;
+
+        #[cfg(feature = "custom_allocator")]
+        {
+            skip = basic_test_fn();
+        }
+
+        #[cfg(not(feature = "custom_allocator"))]
+        {
+            skip = true;
+        }
+        if !skip {
+            // Define a struct
+            struct MyStruct {
+                field1: i32,
+                field2: String,
+            }
+
+            // Create an instance of the struct and allocate it on the heap
+            let my_struct = MyStruct {
+                field1: 10,
+                field2: String::from("Hello, Rust!"),
+            };
+
+            let boxed_struct = Box::new(my_struct);
+
+            // Use the boxed_struct
+            println!("field1: {}", boxed_struct.field1);
+            println!("field2: {}", boxed_struct.field2);
+        }
+    }
 
     #[test]
     fn test_int() {
@@ -253,6 +288,7 @@ mod tests {
             bindings::sdmm_free(calloc_ptr);
         }
     }
+
 
 }
 

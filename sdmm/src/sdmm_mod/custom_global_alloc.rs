@@ -67,8 +67,9 @@ unsafe impl GlobalAlloc for SimpleAllocator {
 }
 
 #[cfg(feature = "custom_allocator")]
-pub fn test_call_fn() {
+pub fn basic_test_fn() -> bool {
     let _s = format!("allocating a string!");
     let currently = ALLOCATOR.remaining.load(Relaxed);
     println!("allocated so far: {}", ARENA_SIZE - currently);
+    false
 }

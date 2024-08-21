@@ -2,7 +2,8 @@
 mod tests {
     use crate::bindings;
     use crate::ValueDescriptor;
-    use crate::basic_test_fn;
+    use crate::sdmm_mod::custom_global_alloc;
+
 
     #[test]
     fn test_global_alloc() {
